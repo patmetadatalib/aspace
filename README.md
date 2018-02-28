@@ -10,6 +10,5 @@ INITIALIZING THE CLIENT
 		
 		
 		
-		
-	RENEWING SESSION
+RENEWING SESSION
 		>>>client.login()
