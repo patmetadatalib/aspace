@@ -239,10 +239,5 @@ class Aspace(object):
 		url = self.api+'/config/enumerations/'+self.id
 		r = requests.get(url, headers=self.session).json()
 		return r
-	'''
-	
-	super().__init__(first, last, pay) -- to inherit init methods from super class 
-	
-	
-	'''
+
 	
