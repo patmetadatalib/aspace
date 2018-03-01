@@ -24,10 +24,9 @@ Initialize the client by passing your username, password, the url of the API, an
 from aspace import Aspace
 client = Aspace('uname', 'pword', 'api', repo number)
 ```		
-		
+## RENEWING SESSION 		
 If you are working in the Python interpreter and need to renew your session, use the login() function to retrieve a new session token which will be attached to all subsequent requests.  	
 
-## RENEWING SESSION
 ```
 client.login()
 ```
