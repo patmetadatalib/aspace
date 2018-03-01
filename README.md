@@ -63,15 +63,20 @@ top_container = client.get_container(id)
 ### Working with records
 The package has a number of functions for working with any kind of record that can be retrieved from the API.
 
+#### Getting Record ID
 ```
 id = client.get_id(record)
 ```
 Given a record, this function returns the ID for any kind of record.
 
+#### Getting a field from a record
+
 ```
 field = client.get_field(record, 'field')
 ```
-Given a record and the field name (in quotes) from the JSON model, this function returns the value of taht field or throws an error if the field is not found in the record.
+Given a record and the field name (in quotes) from the JSON model, this function returns the value of that field or throws an error if the field is not found in the record.
+
+#### Updating a field on an existing record
 
 ```
 updated_record = client.update_record(record, 'field', 'new value')
