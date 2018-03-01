@@ -30,7 +30,7 @@ client.login()
 
 ## USING THE CLIENT
 
-This client uses separate functions to retrieve different types of records from the API. 
+This client uses separate functions to retrieve different types of records from the API. I used descriptive names for the variables here, but in practice I typically use much shorter ones (e.g. a single letter for the client, 'tc' for top container, etc.)
 
 ### Retrieving a resource record
 To retrieve resources, use the get_resource() record along with the ID of the resource you are looking for.
