@@ -10,7 +10,7 @@ Install the client using pip
 pip install aspace
 ```
 
-### DEPENDENCIES
+#### DEPENDENCIES
 This client makes use of the [requests](http://docs.python-requests.org/en/master/) library as well as the json library that should ship with Python. It was written using Python 3.6.2 and tested on Windows 10.  
 
 ## INITIALIZING THE CLIENT
