@@ -2,7 +2,11 @@
 Client for working with REST API for ArchivesSpace
 
 
-This was a Python client I developed to help with my own work using the REST API for ArchivesSpace. I developed in in order to reduce the amount of time spent wrangling with URLs to access different record types. I also wanted to make it accessible to people just getting into programming like myself, so if you have questions or problems or things that would make it more user-friendly please don't hesitate to contact. I'm still trying to get my head around git but if you have ideas to make this more helpful please do so. I've tried to add helpful comments in the code itself in addition to this readme. 
+This was a Python client I developed to help with my own work using the REST API for ArchivesSpace. I developed in in order to reduce the amount of time spent wrangling with URLs to access different record types. I also wanted to make it accessible to people just getting into programming like myself, so if you have questions or problems or things that would make it more user-friendly please don't hesitate to contact. I'm still trying to get my head around git but if you have ideas to make this more helpful please do so. 
+
+Since this was developed to help with my own work I plan to update it with new functions as I need them or as new features become available on ArchivesSpace, though there is no schedule for those updates. 
+
+Contact me at 
 
 harringp [at] uwosh.edu
 
