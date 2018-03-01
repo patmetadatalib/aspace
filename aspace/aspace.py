@@ -187,7 +187,21 @@ class Aspace(object):
 			status = update_sent['error']
 			print(status)
 			return record
-
+		
+	def update_container(self, record, id):
+		query_url = self.api+'/repositories/'+str(self.repo)+'/top_containers/'+str(self.id)
+		update_sent = requests.post(query_url, headers=self.session, data=record).json()
+		#print(update_sent)
+		try:
+			status = update_sent['status']
+			if status == 'Updated':
+				print('Update successful!')
+			else: 
+				print('Update failed!')
+		except KeyError:
+			status = update_sent['error']
+			print(status)
+			return record	
 	'''
 	FUNCTIONS FOR WORKING WITH ARCHIVAL OBJECTS
 		get_ancestors: takes archival object record --> returns list of ancestors for that object
