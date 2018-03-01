@@ -2,13 +2,6 @@
 Client for working with REST API for ArchivesSpace
 
 
-This was a Python client I developed to help with my own work using the REST API for ArchivesSpace. I developed in in order to reduce the amount of time spent wrangling with URLs to access different record types. I also wanted to make it accessible to people just getting into programming like myself. I'm still trying to get my head around git but if you have ideas to make this more helpful please do so. 
-
-Since this was developed to help with my own work I plan to update it with new functions as I need them or as new features become available on ArchivesSpace, though there is no schedule for those updates. 
-
-Contact me at 
-
-harringp [at] uwosh.edu
 
 ## INSTALLATION
 
@@ -101,3 +94,12 @@ client.update_container(container_record, id)
 ```
 Given a top container record and the id for that container, this function sends the updated record to the server and will either return a success message or an error.
 
+## ABOUT
+
+This was a Python client I developed to help with my own work using the REST API for ArchivesSpace. I developed in in order to reduce the amount of time spent wrangling with URLs to access different record types. I also wanted to make it accessible to people just getting into programming like myself. I'm still trying to get my head around git but if you have ideas to make this more helpful please do so. 
+
+Since this was developed to help with my own work I plan to update it with new functions as I need them or as new features become available on ArchivesSpace, though there is no schedule for those updates. 
+
+Contact me at 
+
+harringp [at] uwosh.edu
