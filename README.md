@@ -15,7 +15,7 @@ This client makes use of the [requests](http://docs.python-requests.org/en/maste
 
 ## INITIALIZING THE CLIENT
 
-Initialize the client by passing your username, password, the url of the API, and the repository you would like to work with. 
+Initialize the client by passing your username, password, the url of the API, and the repository you would like to work with. All but the repo number should be wrapped in quotes. 
 
 ```
 from aspace import Aspace
