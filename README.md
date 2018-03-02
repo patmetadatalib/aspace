@@ -81,7 +81,7 @@ Given a record and the field name (in quotes) from the JSON model, this function
 ```
 updated_record = client.update_record(record, 'field', 'new value')
 ```
-Given a record, the field to be updated, and the new value this function will return an updated record with the new value. NOTE: This function does NOT post the resulting record to the server. To update the record on the server, use the functions below:
+Given a record, the field to be updated, and the new value this function will return an updated record with the new value. NOTE: This function does NOT post the resulting record to the server. This also means that controlled value fields, which differ from institution to institution, are also not checked at this stage so while any new value can be added here, it will throw an error once sent to the server. To update the record on the server, use the functions below:
 
 ### Updating the records in ArchivesSpace 
 ```
