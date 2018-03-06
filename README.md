@@ -105,6 +105,9 @@ This was a Python client I developed to help with my own work using the REST API
 
 Since this was developed to help with my own work I plan to update it with new functions as I need them or as new features become available on ArchivesSpace, though there is no schedule for those updates. If I make changes I will make sure they are reflected in [PYPI](https://pypi.python.org/pypi/aspace/1.3) as well. The most recent published version is 1.3. 
 
+### Known Problems 
+Check the known problems page for a list of bugs I've come across in the package but haven't fixed. If you come across other problems please contact me via email so I can hopefully address them or at least acknowledge them there so others are aware. 
+
 Contact me at 
 
 harringp [at] uwosh.edu
