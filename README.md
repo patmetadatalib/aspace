@@ -1,5 +1,5 @@
 # aspace
-Client for working with REST API for ArchivesSpace
+Python client for working with REST API for ArchivesSpace
 
 
 
