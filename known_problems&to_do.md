@@ -3,6 +3,6 @@
 * get_id functions throws error when reading records saved in lists in the Python interpreter. Probably affects the other record-independent functions
 
 
-## To Do
-* EAD export 
-* methods for writing to file (CSV, XML)
+## In Progress
+* methods for writing to file/exporting EAD (CSV, XML)
+* keyword searching 
