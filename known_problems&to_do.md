@@ -5,4 +5,4 @@
 
 ## In Progress
 * methods for writing to file/exporting EAD (CSV, XML)
-* keyword searching 
+* searching 
