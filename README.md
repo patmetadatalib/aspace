@@ -15,7 +15,7 @@ This client makes use of the [requests](http://docs.python-requests.org/en/maste
 
 ## INITIALIZING THE CLIENT
 
-Initialize the client by passing your username, password, the url of the API, and the repository you would like to work with. All but the repo number should be wrapped in quotes. 
+Initialize the client by passing your username, password, the url of the API, and the repository you would like to work with. All but the repo number should be wrapped in quotes. Though setups may differ, this client assumes there will be no slash at the end of the API URL and will add the relevant directory structure depending on the type of operation you are performing.  
 
 ```
 from aspace import Aspace
@@ -84,15 +84,21 @@ updated_record = client.update_record(record, 'field', 'new value')
 Given a record, the field to be updated, and the new value this function will return an updated record with the new value. NOTE: This function does NOT post the resulting record to the server. This also means that controlled value fields, which differ from institution to institution, are also not checked at this stage so while any new value can be added here, it will throw an error once sent to the server. To update the record on the server, use the functions below:
 
 ### Updating the records in ArchivesSpace 
+
+#### Updating an object
 ```
 client.update_object(object_record, id)
 ```
 Given  an archival object record and the id for that object, this function sends the updated record to the server and will either return a success message or an error.
 
+#### Updating a resource
+
 ```
 client.update_resource(resource_record, id)
 ```
 Given a resource record and the id for that object, this function sends the updated record to the server and will either return a success message or an error.
+
+#### Updating a top container
 
 ```
 client.update_container(container_record, id)
