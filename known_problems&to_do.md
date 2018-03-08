@@ -6,3 +6,6 @@
 ## In Progress
 * methods for writing to file/exporting EAD (CSV, XML)
 * searching 
+
+## TO DO
+* working with agents/subjects
