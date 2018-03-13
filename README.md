@@ -79,9 +79,11 @@ Given a record and the field name (in quotes) from the JSON model, this function
 #### Updating a field on an existing record
 
 ```
-updated_record = client.update_record(record, 'field', 'new value')
+updated_record = client.change_record(record, 'field', 'new value')
 ```
-Given a record, the field to be updated, and the new value this function will return an updated record with the new value. NOTE: This function does NOT post the resulting record to the server. This also means that controlled value fields, which differ from institution to institution, are also not checked at this stage so while any new value can be added here, it will throw an error once sent to the server. To update the record on the server, use the functions below:
+Given a record, the field to be updated, and the new value this function will return an updated record with the new value. NOTE: This function does NOT post the resulting record to the server. This also means that controlled value fields, which differ from institution to institution, are also not checked at this stage so while any new value can be added here, it will throw an error once sent to the server. 
+UPDATE: the name of this function has been changed from update_record to change_record in order to clarify differences between changing the record and posting those changes to the server. 
+To update the record on the server, use the functions below:
 
 ### Updating the records in ArchivesSpace 
 
@@ -104,6 +106,64 @@ Given a resource record and the id for that object, this function sends the upda
 client.update_container(container_record, id)
 ```
 Given a top container record and the id for that container, this function sends the updated record to the server and will either return a success message or an error.
+
+
+### Searching repositories via API 
+
+As of version 1.5 I have added functions to help with searching a repository via the API. The client currently utilzes a function for performing a keyword search and a separate function for particular fields. Some fields may not be searchable, but that should be refleced in the results. 
+
+#### Performing a search
+
+These functions take a search term and return a list of all records returned by the server in JSON. If a search will return more than 100 pages of records (default is 10 records per page), the user will be prompted whether they would like to perform the search or abandon it. 
+##### Keyword search
+```
+search_term = 'Union'
+results = client.keyword_search(search_term)
+```
+##### Title (or other field search)
+```
+search_term = 'Union'
+field = 'title'
+results = client.field_search(search_term, field)
+
+```
+
+#### Analyzing results
+This function will take the results of the search function above and return a Python dictionary of records where the key is the record type and the value for that key is the list of all records of that type. It will also print a list of all record types found in the search and the number of records for each type. 
+
+For example:
+
+```
+results_dict = client.analyze_results(results)
+
+```
+
+will produce
+```
+[('archival_objects', 400), ('corporate_entities', 7), ('resources', 34), ('people', 2)]
+```
+and allow you to perform functions on the results_dict dictionary as you would any other dictionary. The records are stored in JSON format. 
+
+### Writing finding aids and other descriptions to a file
+This client also allows you to make use of built-in functions in ArchivesSpace to write EAD and MARC descriptions of resources in various file formats. Since the generation of finding aids and other record types takes place on the server, there isn't a way to alter the way ArchivesSpace develops the file using this client. It also means that this client cannot write these files using records that have been changed if those changes are not reflected on the server. 
+
+Currently ArchivesSpace can create EAD, EAD3, and MARC records for a given resource. Both versions of EAD can be written as PDF files or XML files, though the MARC record will only be written in XML. Regardless of the desired format, the functions take an id of a resource and the desired file name and will write the files to the current directory. Examples of how each function works are shown below:
+
+```
+id = 1017
+client.write_ead(id, 'ead') => ~/Current_Folder/ead.xml
+client.write_ead_pdf(id, 'ead_pdf' => ~/Current_Folder/ead_pdf.pdf
+
+client.write_ead3(id, 'ead3') => ~/Current_Folder/ead3.xml
+client.write_ead3_pdf(id, 'ead3_pdf') => ~/Current_Folder/ead3_pdf.pdf
+
+client.write_marc(id, 'marc') => ~/Current_Folder/marc.xml
+
+
+
+```
+
+
 
 ## ABOUT
 
