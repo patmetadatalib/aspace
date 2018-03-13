@@ -7,3 +7,4 @@
 
 ## TO DO
 * working with agents/subjects
+* editing results of search and updating them 
