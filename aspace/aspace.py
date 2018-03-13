@@ -106,7 +106,7 @@ class Aspace(object):
 		except KeyError:
 			print('No record of last modification')
 			
-	def update_record(self, record, field, new_value):
+	def change_record(self, record, field, new_value):
 		self.field = field
 		try: 
 			record[field] = new_value
@@ -115,7 +115,20 @@ class Aspace(object):
 		except KeyError:
 			print('Field not found!')
 
-
+	def update_container(self, record, id):
+		query_url = self.api+'/repositories/'+str(self.repo)+'/top_containers/'+str(self.id)
+		update_sent = requests.post(query_url, headers=self.session, data=record).json()
+		#print(update_sent)
+		try:
+			status = update_sent['status']
+			if status == 'Updated':
+				print('Update successful!')
+			else: 
+				print('Update failed!')
+		except KeyError:
+			status = update_sent['error']
+			print(status)
+			return record
 	
 	'''
 	FUNCTIONS FOR WORKING WITH RESOURCES:
@@ -187,21 +200,62 @@ class Aspace(object):
 			status = update_sent['error']
 			print(status)
 			return record
+	
+
+	'''
+	WRITING FINDING AIDS/RECORDS TO FILE
+		These utilize built in functions to generate finding aids and MARC records from resource in ArchivesSpace, so there isn't a way to change the EAD unless you change the resulting file
+		write_ead: takes id and file name and writes an EAD file in XML format
+		write_ead_pdf: takes id and file name and writes an EAD in PDF format  
+		write_ead3: takes id and file name and writes an EAD3 file in XML format
+		write_ead3_pdf: takes id and file name and writes an EAD3 in PDF format  
+		write_marc: takes id and file name and writes a MARCXML file 
 		
-	def update_container(self, record, id):
-		query_url = self.api+'/repositories/'+str(self.repo)+'/top_containers/'+str(self.id)
-		update_sent = requests.post(query_url, headers=self.session, data=record).json()
-		#print(update_sent)
-		try:
-			status = update_sent['status']
-			if status == 'Updated':
-				print('Update successful!')
-			else: 
-				print('Update failed!')
-		except KeyError:
-			status = update_sent['error']
-			print(status)
-			return record	
+	
+	'''
+
+	
+	def write_ead(self, id, fname):
+		fname = fname + '.xml'
+		xml_url = self.api+'/repositories/'+str(self.repo)+'/resource_descriptions/'+str(id)+'.xml'
+		r = requests.get(xml_url, headers=self.session)
+		xml_str = r.content.decode('utf-8')
+		with open(fname, 'w') as f:
+			f.write(xml_str)
+	
+	def write_ead_pdf(self, id, fname):
+		fname = fname + '.pdf'
+		xml_url = self.api+'/repositories/'+str(self.repo)+'/resource_descriptions/'+str(id)+'.pdf'
+		r = requests.get(xml_url, headers=self.session)
+		#r_str = r.content.decode('utf-8')
+		with open(fname, 'wb') as f:
+			f.write(r.content)
+			
+	def write_ead3_pdf(self, id, fname):
+		fname = fname + '.pdf'
+		xml_url = self.api+'/repositories/'+str(self.repo)+'/resource_descriptions/'+str(id)+'.pdf?ead3=true'
+		r = requests.get(xml_url, headers=self.session)
+		#r_str = r.content.decode('utf-8')
+		with open(fname, 'wb') as f:
+			f.write(r.content)		
+			
+	def write_ead3(self, id, fname):
+		fname = fname + '.xml'
+		xml_url = self.api+'/repositories/'+str(self.repo)+'/resource_descriptions/'+str(id)+'.xml?ead3=true'
+		r = requests.get(xml_url, headers=self.session)
+		xml_str = r.content.decode('utf-8')
+		with open(fname, 'w') as f:
+			f.write(xml_str)
+			
+	def write_marc(self, id, fname):
+		fname = fname + '.xml'
+		xml_url = self.api+'/repositories/'+str(self.repo)+'/resources/marc21/'+str(id)+'.xml'
+		r = requests.get(xml_url, headers=self.session)
+		xml_str = r.content.decode('utf-8')
+		with open(fname, 'w') as f:
+			f.write(xml_str)
+	
+
 	'''
 	FUNCTIONS FOR WORKING WITH ARCHIVAL OBJECTS
 		get_ancestors: takes archival object record --> returns list of ancestors for that object
@@ -227,8 +281,117 @@ class Aspace(object):
 			print(status)
 			return record
 	
+	'''
+	SEARCHING VIA API
+		field_search: takes a search term and a field and returns search results for that term&field combo in a flat list
+			NOTE: this function does not test whether the field exists, but will throw a KeyError when interpreting results if the field doesn't exist
+		keyword_search: takes a search term and returns results for that keyword search in a flat list
+	
+
+		requests_test 
+	WORKING WITH SEARCH RESULTS
+		analyze_results: takes a flat list resulting from one of the above searches and returns:
+			a list of tuples summarizing the different record types returned and their counts &
+			a dictionary of the records organized by record type 
+		
+
+	'''
+	
+	def field_search(self, search_term, field):
+		r, url = self._search(search_term, field)
+		hits, pages, page_size = self.results_info(r)
+		urls = self.get_search_urls(hits, page_size, url)
+		if len(urls) > 100:
+			proceed = input('This search returned more than 100 pages of records, which can take a while to collect. Do you want to proceed? y/n\n')
+			if 'y' in proceed:
+				records = self.get_all_records(urls)
+				flat_records = [y for x in records for y in x]
+				return flat_records
+		if len(urls) <= 100:
+			records = self.get_all_records(urls)
+			flat_records = [y for x in records for y in x]
+			return flat_records
 	
 	
+	def keyword_search(self, search_term):
+		r, url = self._search(search_term, 'keyword')
+		hits, pages, page_size = self.results_info(r)
+		urls = self.get_search_urls(hits, page_size, url)
+		if len(urls) > 100:
+			proceed = input('This search returned more than 100 pages of records, which can take a while to collect. Do you want to proceed? y/n\n')
+			if 'y' in proceed:
+				records = self.get_all_records(urls)
+				flat_records = [y for x in records for y in x]
+				return flat_records
+		if len(urls) <= 100:
+			records = self.get_all_records(urls)
+			flat_records = [y for x in records for y in x]
+			return flat_records
+	
+	def analyze_results(self, records):
+		results = []
+		type_dict = {}
+		for i in records:
+			uri = i['uri']
+			type = uri.split('/')[-2]
+			if type not in type_dict:
+				type_dict[type] = [i]
+			if type in type_dict:
+				type_dict[type].append(i)
+		for k, v in type_dict.items():
+			l = len(v)
+			t = (k, l)
+			results.append(t)		
+		print(results)		
+		return type_dict
+	
+	def _search(self, search_term, field):
+		wrapper = {}
+		query = {}
+		query['field'] = field
+		query['value'] = search_term
+		query['jsonmodel_type'] = 'field_query'
+		query['negated'] = False
+		query['literal'] = False
+		query_json = json.dumps(query)
+		s = '{\"query\":'+query_json+'}'
+		search_url = self.api+'/search?page=1&aq='+s
+		r = requests.get(search_url, headers=self.session).json()
+		return r, search_url 
+	
+	def get_search_urls(self, hits, page_size, search_url):
+		urls = [] 
+		n = int(hits / page_size)
+		r = hits % page_size 
+		p = n
+		pgs = list(range(1, p))
+		if r > 0:
+			p = n+2
+			pgs = list(range(1, p))
+		
+		for i in pgs:
+			tmp = '=' + str(i)
+			new = search_url.replace('=1', tmp)
+			urls.append(new)	
+		return urls
+	
+	def results_info(self, r):
+		records = []
+		all_results = [] 
+		hits = r['total_hits']
+		print('Total results: ' + str(hits))
+		pages = r['last_page']
+		print('Total pages: ' + str(pages))
+		page_size = r['page_size']
+		return hits, pages, page_size
+		
+	def get_all_records(self, urls):
+		records = []
+		for url in urls:
+			r = requests.get(url, headers=self.session).json()
+			res = r['results']
+			records.append(res)
+		return records		
 	'''
 	FUNCTIONS FOR WORKING WITH CONTROLLED VALUES
 	
@@ -239,5 +402,4 @@ class Aspace(object):
 		url = self.api+'/config/enumerations/'+self.id
 		r = requests.get(url, headers=self.session).json()
 		return r
-
 	
