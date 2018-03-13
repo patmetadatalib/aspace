@@ -142,7 +142,7 @@ will produce
 ```
 [('archival_objects', 400), ('corporate_entities', 7), ('resources', 34), ('people', 2)]
 ```
-and allow you to perform functions on the results_dict dictionary as you would any other dictionary. The records are stored in JSON format. 
+and allow you to perform functions on the results_dict dictionary as you would any other dictionary. The records are stored in JSON format. NOTE: the current version is not able to send changes made to these results back to the server as updates. 
 
 ### Writing finding aids and other descriptions to a file
 This client also allows you to make use of built-in functions in ArchivesSpace to write EAD and MARC descriptions of resources in various file formats. Since the generation of finding aids and other record types takes place on the server, there isn't a way to alter the way ArchivesSpace develops the file using this client. It also means that this client cannot write these files using records that have been changed if those changes are not reflected on the server. 
