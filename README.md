@@ -167,7 +167,7 @@ client.write_marc(id, 'marc') => ~/Current_Folder/marc.xml
 
 ## ABOUT
 
-This was a Python client I developed to help with my own work using the REST API for ArchivesSpace. I developed in in order to reduce the amount of time spent wrangling with URLs to access different record types. I also wanted to make it accessible to people just getting into programming like myself. I'm still trying to get my head around git but if you have ideas to make this more helpful please do so. 
+This was a Python client I developed to help with my own work using the REST API for ArchivesSpace. I developed in in order to reduce the amount of time spent wrangling with URLs to access different record types. I also wanted to make it accessible to people just getting into programming like myself. I'm still trying to get my head around git but if you have ideas to make this more helpful please do so through pull requests and as long as they work that works for me. 
 
 Since this was developed to help with my own work I plan to update it with new functions as I need them or as new features become available on ArchivesSpace, though there is no schedule for those updates. If I make changes I will make sure they are reflected in [PYPI](https://pypi.python.org/pypi/aspace/1.3) as well. The most recent published version is 1.5 
 
