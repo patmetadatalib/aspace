@@ -174,6 +174,8 @@ Since this was developed to help with my own work I plan to update it with new f
 ### Known Problems 
 Check the known problems page for a list of bugs I've come across in the package but haven't fixed. If you come across other problems please contact me via email so I can hopefully address them or at least acknowledge them there so others are aware. 
 
+A common problem that I run into is not doing a JSON dump of a record I've changed before sending it back to the server. When I get more time I'd like to automatically check for this in the client or do it by default, but in case others run into problems that's something to try. Read more here: https://docs.python.org/3/library/json.html
+
 Contact me at 
 
 harringp [at] uwosh.edu
