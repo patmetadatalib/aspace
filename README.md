@@ -85,7 +85,17 @@ Given a record, the field to be updated, and the new value this function will re
 UPDATE: the name of this function has been changed from update_record to change_record in order to clarify differences between changing the record and posting those changes to the server. 
 To update the record on the server, use the functions below:
 
-### Updating the records in ArchivesSpace 
+### Updating the records in ArchivesSpace
+
+NOTE: if you receive an unexpected token error when using these functions, try doing a json dump of the record before sending it to the server, especially if you have made changes to the record and are sending it back. I'd like to put in checks for this error eventually so that it will automatically do the json dump before sending, but as it stands I have enough time to find the error but not enough time to fix it. 
+
+```
+record = client.get_resource(id)
+(Make some change to the record)
+new = json.dumps(record)
+client.update_resource(new) 
+
+```
 
 #### Updating an object
 ```
