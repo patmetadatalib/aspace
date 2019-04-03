@@ -87,15 +87,22 @@ To update the record on the server, use the functions below:
 
 ### Updating the records in ArchivesSpace
 
-NOTE: if you receive an unexpected token error when using these functions, try doing a json dump of the record before sending it to the server, especially if you have made changes to the record and are sending it back. I'd like to put in checks for this error eventually so that it will automatically do the json dump before sending, but as it stands I have enough time to find the error but not enough time to fix it. 
+
+
 
 ```
 record = client.get_resource(id)
 (Make some change to the record)
 new = json.dumps(record)
-client.update_resource(new) 
+client.update_resource(new, id) 
 
 ```
+NOTE: if you receive an unexpected token error when using these functions, try doing a json dump of the record before sending it to the server, especially if you have made changes to the record and are sending it back. 
+As of version 1.6, the change_record function will return a json dump of the record, which can then be piped into the correct update function for the particular object that you are working with. 
+
+In version 1.6, I have removed the print statements that report whether the update is successful or not . In the event of a successful update, the function will return the 'Updated' message from the server, though it will only print this message if you don't do anything. If there is an error, it will return a tuple containing the id and the content of the error message. I found this helpful in doing batch updates.
+
+I am also happy to report that a recent use case here has confirmed that this library is compatible with multi-threading. Threads have helped a lot in speeding up batch updates for us here, so if you would like help in setting that up with this library please do get in touch. 
 
 #### Updating an object
 ```
@@ -168,11 +175,30 @@ client.write_ead3(id, 'ead3') => ~/Current_Folder/ead3.xml
 client.write_ead3_pdf(id, 'ead3_pdf') => ~/Current_Folder/ead3_pdf.pdf
 
 client.write_marc(id, 'marc') => ~/Current_Folder/marc.xml
+```
 
+
+#### Update Dates Function
+
+This function goes through the dates on a resource record and adds beginning and end years for the purpose of searching in ArchivesSpace.
+	 It will change all dates regardless of their date type in ArchivesSpace (e.g. creation vs deaccession dates).
+	 This is a somewhat experimental function, since it makes a number of assumptions about the way data is entered based on how things are in our archive. 
+	Important caveats:
+			-will only sort and add years, not full calendar dates
+			-will throw errors if there is text besides the year and ('n.d.', 'ca.', ';', 's') in the 'expression' field
+
+Here is an example for how this would work for a list of ids:
+
+```
+rec = client.get_resource(id)
+new_rec = client.update_dates(rec)
+client.update_resource(new_rec, id)
 
 
 ```
-
+      
+To make nore nuanced changes, use the change_record function, keeping in mind that dates are always stored as lists even if there is only one. 
+You must use the proper update function for the kind of record you are trying to change for the update to be reflected on the server side. 
 
 
 ## ABOUT
