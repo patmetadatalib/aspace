@@ -34,11 +34,15 @@ class Aspace(object):
 		self.digital_object_url = self.api+'/respositories/'+str(self.repo)+'/digital_objects'
 		self.digital_object_components_url = self.api+'/repositories/'+str(self.repo)+'/digital_object_components'
 		self.classification_url = self.api+'/repositories/'+str(self.repo)+'/classification_terms'
-		self.corporate_entity_url = self.api+'/repositories/'+str(self.repo)+'/corporate_entities'
+		#self.corporate_entity_url = self.api+'/repositories/'+str(self.repo)+'/corporate_entities'
 		self.jobs_url = self.api+'/repositories/'+str(self.repo)+'/jobs'
 		self.assessment_url = self.api+'/repositories/'+str(self.repo)+'/assessments'
 		self.accessions_url = self.api+'/repositories/'+str(self.repo)+'/accessions'
 		self.events_url = self.api+'/repositories/'+str(self.repo)+'/events'
+		self.locations_url = self.api+'/locations/'
+		self.agents_url = self.api+'/agents/'
+		self.corporate_entities_url = self.agents_url+'/corporate_entities'
+		self.person_url = self.agents_url+'/people'
 		response = requests.post(self.api+'/users/'+self.uname+'/login?password='+self.pword)
 		status = response.status_code
 		if status == 403:
@@ -340,7 +344,49 @@ class Aspace(object):
 		new = json.dumps(rec)
 		return new 
 	
+	#Functions for working with locations 
+	
+	def get_locations(self):
+		query_url = self.api+'/locations?all_ids=true'
+		lookup = requests.get(query_url, headers=self.session).json()
+		id_list = list(lookup)
+		return id_list
+		
+	def get_location(self, id):
+		query_url = self.locations_url+id 
+		lookup = requests.get(query_url, headers=self.session).json()
+		return lookup
+	
+	def delete_location(self, id):
+		query_url = self.locations_url+id
+		delete = requests.delete(query_url, headers=self.session)
+		return delete	
+		
+	#Functions for working with Agents 
 
+	def get_corporate_entities(self):
+		query_url = self.corporate_entities_url+'?all_ids=true'
+		lookup = requests.get(query_url, headers=self.session).json()
+		id_list = list(lookup)
+		return id_list 
+	
+	def get_corporate_entity(self, id):
+		query_url = self.corporate_entities_url+'/'+id 
+		lookup = requests.get(query_url, headers=self.session).json()
+		return lookup
+	
+	def update_entity(self, record, id):
+		self.id = id
+		query_url = self.corporate_entities_url+'/'+str(self.id)
+		update_sent = requests.post(query_url, headers=self.session, data=record).json()
+		try:
+			status = update_sent['status']
+			return status 
+		except KeyError:
+			error = update_sent['error']
+			t = (id, error)
+			return t 
+	
 	'''
 	SEARCHING VIA API
 		field_search: takes a search term and a field and returns search results for that term&field combo in a flat list
@@ -516,4 +562,3 @@ class Aspace(object):
 		new = json.dumps(rec)	
 		return new 	
 		
-	
